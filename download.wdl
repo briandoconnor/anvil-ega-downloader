@@ -5,7 +5,7 @@ task download {
 input {
   String fileid
   String fileType
-  String token
+  File token
 }
 
 command {
@@ -13,7 +13,7 @@ command {
 }
 
 output {
-  Array[File] outputfile = glob("${fileid}*.${fileType}")
+  Array[File] outputfile = glob("${fileid}/*.${fileType}")
 }
 
 runtime {
@@ -29,13 +29,13 @@ workflow ega_download {
 input {
   String fileid
   String fileType
-  String token
+  File token
 }
 
 call download { input: fileid=fileid, fileType=fileType, token=token  }
 
 output {
-  Array[File] outputfile = download.outputfile
+  File outputfile = download.outputfile[0]
 }
 
 }
